@@ -20,6 +20,12 @@ def main() -> None:
         action="store_true",
         help="List available network interfaces and exit",
     )
+    parser.add_argument(
+        "-n", "--interval",
+        type=float,
+        default=1.0,
+        help="Screen refresh interval in seconds (default: 1.0)",
+    )
     args = parser.parse_args()
 
     if args.list:
@@ -42,7 +48,7 @@ def main() -> None:
 
     from ipvtop.app import IPvTopApp
 
-    app = IPvTopApp(interface=args.interface)
+    app = IPvTopApp(interface=args.interface, interval=args.interval)
     app.run()
 
 
