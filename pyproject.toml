@@ -4,8 +4,10 @@ version = "0.1.0"
 description = "Real-time network traffic monitor TUI with IPv4/IPv6 breakdown"
 readme = "README.md"
 authors = [
-    { name = "Isaac Behrens", email = "isaac@behrenshome.com" }
+    { name = "Isaac B. Behrens", email = "isaac@behrenshome.com" }
 ]
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = [
     "textual>=2.0.0,<3",
