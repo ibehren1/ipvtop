@@ -30,6 +30,8 @@ a = Analysis(
         "ipvtop.widgets.top_talkers",
         "ipvtop.widgets.protocol_breakdown",
         "ipvtop.widgets.traffic_split",
+        "ipvtop.widgets.cpu_panel",
+        "psutil",
         "textual",
         "textual_plotext",
         "plotext",

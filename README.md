@@ -4,6 +4,9 @@ A real-time network traffic monitor for the terminal with IPv4/IPv6 breakdown. I
 
 Built with [Textual](https://github.com/Textualize/textual), [Plotext](https://github.com/piccolomo/plotext), and [Scapy](https://scapy.net/).
 
+## Build Status
+[![Build binaries](https://github.com/ibehren1/ipvtop/actions/workflows/build.yml/badge.svg)](https://github.com/ibehren1/ipvtop/actions/workflows/build.yml)
+
 ## Features
 
 - Live packet capture with per-second refresh
@@ -57,7 +60,6 @@ Download the latest binary for your platform from [GitHub Releases](../../releas
 |----------|-------------|----------|
 | Linux    | x86_64      | `ipvtop-linux-x86_64` |
 | Linux    | ARM64       | `ipvtop-linux-arm64` |
-| macOS    | x86_64      | `ipvtop-macos-x86_64` |
 | macOS    | ARM64       | `ipvtop-macos-arm64` |
 
 ```bash

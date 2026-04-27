@@ -1,4 +1,4 @@
-.PHONY: build clean run dev list
+.PHONY: build clean run dev list release
 
 build:
 	uv sync --dev
@@ -15,3 +15,10 @@ dev:
 
 list:
 	uv run ipvtop -l
+
+release:
+ifndef VERSION
+	$(error VERSION is required. Usage: make release VERSION=0.1.0)
+endif
+	git tag v$(VERSION)
+	git push origin v$(VERSION)

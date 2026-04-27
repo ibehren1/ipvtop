@@ -4,6 +4,7 @@ from .sparkline_panel import SparklinePanel
 from .top_talkers import TopTalkersTable
 from .protocol_breakdown import ProtocolBreakdown
 from .traffic_split import TrafficSplit
+from .cpu_panel import CpuPanel
 
 __all__ = [
     "SummaryPanel",
@@ -12,4 +13,5 @@ __all__ = [
     "TopTalkersTable",
     "ProtocolBreakdown",
     "TrafficSplit",
+    "CpuPanel",
 ]

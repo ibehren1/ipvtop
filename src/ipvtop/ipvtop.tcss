@@ -24,7 +24,7 @@ Footer {
 }
 
 #summary {
-    width: 34;
+    width: 1fr;
     border: round #303050;
     border-title-color: #50a0ff;
     border-title-align: left;
@@ -37,7 +37,7 @@ Footer {
 }
 
 #bandwidth-chart {
-    width: 1fr;
+    width: 2fr;
     border: round #303050;
     border-title-color: #50ffa0;
     border-title-align: left;
@@ -125,6 +125,15 @@ Sparkline.v6-spark > .sparkline--min-color {
     width: 100%;
     margin: 0;
     overflow-y: auto;
+}
+
+#cpu-panel {
+    height: 10;
+    border: round #303050;
+    border-title-color: #ffa050;
+    border-title-align: left;
+    background: #0e0e20;
+    padding: 0;
 }
 
 #protocol-breakdown {

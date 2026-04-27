@@ -22,10 +22,6 @@ jobs:
             arch: arm64
             runner: ubuntu-22.04-arm
             artifact: ipvtop-linux-arm64
-          - os: macos-13
-            arch: x86_64
-            runner: macos-13
-            artifact: ipvtop-macos-x86_64
           - os: macos-14
             arch: arm64
             runner: macos-14
@@ -35,10 +31,10 @@ jobs:
     name: Build ${{ matrix.artifact }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8
         with:
           version: "latest"
 
@@ -55,7 +51,7 @@ jobs:
         run: mv dist/ipvtop dist/${{ matrix.artifact }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: dist/${{ matrix.artifact }}
@@ -67,7 +63,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
@@ -82,12 +78,11 @@ jobs:
           cat SHA256SUMS.txt
 
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
           files: |
             artifacts/ipvtop-linux-x86_64/ipvtop-linux-x86_64
             artifacts/ipvtop-linux-arm64/ipvtop-linux-arm64
-            artifacts/ipvtop-macos-x86_64/ipvtop-macos-x86_64
             artifacts/ipvtop-macos-arm64/ipvtop-macos-arm64
             artifacts/SHA256SUMS.txt
