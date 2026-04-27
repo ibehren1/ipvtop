@@ -1,0 +1,26 @@
+[project]
+name = "ipvtop"
+version = "0.1.0"
+description = "Real-time network traffic monitor TUI with IPv4/IPv6 breakdown"
+readme = "README.md"
+authors = [
+    { name = "Isaac Behrens", email = "isaac@behrenshome.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=2.0.0,<3",
+    "textual-plotext>=1.0.0,<2",
+    "scapy>=2.5,<3",
+]
+
+[project.scripts]
+ipvtop = "ipvtop.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.0,<7",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.6,<0.12.0"]
+build-backend = "uv_build"

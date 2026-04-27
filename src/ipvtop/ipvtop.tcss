@@ -1,0 +1,195 @@
+/* btop-inspired dark theme for ipvtop */
+
+Screen {
+    background: #0a0a1a;
+    color: #c0c0d0;
+}
+
+Header {
+    background: #1a1a2e;
+    color: #50a0ff;
+    text-style: bold;
+}
+
+Footer {
+    background: #1a1a2e;
+    color: #606080;
+}
+
+/* ── Top row: summary + bandwidth chart ── */
+
+#top-row {
+    height: 14;
+    margin: 0 1;
+}
+
+#summary {
+    width: 34;
+    border: round #303050;
+    border-title-color: #50a0ff;
+    border-title-align: left;
+    padding: 0;
+    background: #0e0e20;
+}
+
+#summary:focus {
+    border: round #50a0ff;
+}
+
+#bandwidth-chart {
+    width: 1fr;
+    border: round #303050;
+    border-title-color: #50ffa0;
+    border-title-align: left;
+    background: #0e0e20;
+}
+
+#bandwidth-chart:focus {
+    border: round #50ffa0;
+}
+
+/* ── Traffic split bar ── */
+
+#traffic-split {
+    height: 4;
+    margin: 0 1;
+    border: round #303050;
+    border-title-color: #ffa050;
+    border-title-align: left;
+    background: #0e0e20;
+}
+
+/* ── Middle row: sparklines ── */
+
+#mid-row {
+    height: 11;
+    margin: 0 1;
+}
+
+#sparklines {
+    width: 1fr;
+    border: round #303050;
+    border-title-color: #ffa050;
+    border-title-align: left;
+    background: #0e0e20;
+    padding: 0 1;
+}
+
+Sparkline {
+    height: 1;
+}
+
+Sparkline.v4-spark > .sparkline--max-color {
+    color: #50a0ff;
+}
+
+Sparkline.v4-spark > .sparkline--min-color {
+    color: #1a1a40;
+}
+
+Sparkline.v6-spark > .sparkline--max-color {
+    color: #50ffa0;
+}
+
+Sparkline.v6-spark > .sparkline--min-color {
+    color: #1a2a1a;
+}
+
+/* ── Bottom row: top talkers + protocol breakdown ── */
+
+#bottom-row {
+    height: 1fr;
+    min-height: 10;
+    margin: 0 1;
+}
+
+#top-talkers {
+    width: 2fr;
+    border: round #303050;
+    border-title-color: #a050ff;
+    border-title-align: left;
+    background: #0e0e20;
+}
+
+#right-col {
+    width: 1fr;
+    layout: vertical;
+}
+
+#status-label {
+    height: auto;
+    max-height: 8;
+    background: #1a1a2e;
+    color: #50a0ff;
+    text-style: bold;
+    width: 100%;
+    margin: 0;
+    overflow-y: auto;
+}
+
+#protocol-breakdown {
+    height: 1fr;
+    border: round #303050;
+    border-title-color: #ff50a0;
+    border-title-align: left;
+    background: #0e0e20;
+    padding: 0;
+}
+
+/* ── DataTable styling ── */
+
+DataTable {
+    background: #0e0e20;
+    color: #c0c0d0;
+}
+
+DataTable > .datatable--header {
+    background: #1a1a2e;
+    color: #8080a0;
+    text-style: bold;
+}
+
+DataTable > .datatable--cursor {
+    background: #252545;
+    color: #ffffff;
+}
+
+DataTable > .datatable--even-row {
+    background: #0e0e20;
+}
+
+DataTable > .datatable--odd-row {
+    background: #121228;
+}
+
+/* ── Tabbed content ── */
+
+TabbedContent {
+    background: #0e0e20;
+}
+
+TabPane {
+    padding: 0;
+}
+
+Tabs {
+    background: #1a1a2e;
+}
+
+Tab {
+    color: #606080;
+    background: #1a1a2e;
+}
+
+Tab.-active {
+    color: #50a0ff;
+    text-style: bold;
+}
+
+Underline > .underline--bar {
+    color: #303050;
+}
+
+Tab:hover {
+    color: #80b0ff;
+}
