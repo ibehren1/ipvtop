@@ -1,6 +1,8 @@
 import os
 import importlib
 
+from PyInstaller.utils.hooks import copy_metadata
+
 # Locate installed package paths for data file collection
 textual_path = os.path.dirname(importlib.import_module("textual").__file__)
 textual_plotext_path = os.path.dirname(importlib.import_module("textual_plotext").__file__)
@@ -16,6 +18,8 @@ a = Analysis(
         (textual_plotext_path, "textual_plotext"),
         # Our own .tcss stylesheet
         (os.path.join(ipvtop_path, "ipvtop.tcss"), "ipvtop"),
+        # Bundle package metadata so importlib.metadata can read __version__
+        *copy_metadata("ipvtop"),
     ],
     hiddenimports=[
         "ipvtop",

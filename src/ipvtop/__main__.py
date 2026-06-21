@@ -6,6 +6,8 @@ import sys
 
 
 def main() -> None:
+    from ipvtop import __version__
+
     parser = argparse.ArgumentParser(
         prog="ipvtop",
         description="Real-time network traffic monitor with IPv4/IPv6 breakdown",
@@ -14,6 +16,12 @@ def main() -> None:
         "interface",
         nargs="?",
         help="Network interface to monitor (e.g., eth0, wlan0)",
+    )
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show the version and exit",
     )
     parser.add_argument(
         "-l", "--list",
@@ -25,6 +33,11 @@ def main() -> None:
         type=float,
         default=1.0,
         help="Screen refresh interval in seconds (default: 1.0)",
+    )
+    parser.add_argument(
+        "-r", "--resolve",
+        action="store_true",
+        help="Reverse-DNS resolve source/dest IPs, showing hostnames when available",
     )
     args = parser.parse_args()
 
@@ -48,7 +61,7 @@ def main() -> None:
 
     from ipvtop.app import IPvTopApp
 
-    app = IPvTopApp(interface=args.interface, interval=args.interval)
+    app = IPvTopApp(interface=args.interface, interval=args.interval, resolve=args.resolve)
     app.run()
 
 
