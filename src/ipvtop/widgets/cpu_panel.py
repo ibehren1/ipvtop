@@ -32,21 +32,19 @@ class CpuPanel(Widget):
 
     def render(self) -> Text:
         text = Text()
-        bar_width = max(self.size.width - 4, 10)
+        bar_width = max(self.size.width - 18, 10)
 
         rows = [
-            ("User  ", self._user_pct, "#50a0ff"),
+            ("User", self._user_pct, "#50a0ff"),
             ("System", self._system_pct, "#a050ff"),
-            ("Total ", self._total_pct, "#50ffa0"),
+            ("Total", self._total_pct, "#50ffa0"),
             ("ipvtop", self._process_pct, "#ffa050"),
         ]
 
         for label, pct, bar_color in rows:
-            text.append(f"  {label} ", style="bold #a0a0a0")
-            text.append(f"{pct:>5.1f}%\n", style=self._color(pct))
-            text.append("  ")
-            self._draw_bar(text, pct, bar_width, bar_color, "#1a1a40")
-            text.append("\n")
+            text.append(f"  {label:<8}", style=f"bold {bar_color}")
+            self._draw_bar(text, pct, bar_width, bar_color, "#303030")
+            text.append(f" {pct:>5.1f}%\n", style=self._color(pct))
 
         return text
 

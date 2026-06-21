@@ -9,14 +9,17 @@ Built with [Textual](https://github.com/Textualize/textual), [Plotext](https://g
 
 ## Features
 
-- Live packet capture with per-second refresh
+- Live packet capture with a configurable refresh interval
 - IPv4 vs IPv6 traffic breakdown across all panels
 - Rolling 60-second bandwidth chart (Mb/s) with braille-dot plotting
 - Sparkline history for packets/s and Mb/s per protocol version
 - Visual IPv4/IPv6 traffic split bar
-- Top talkers table (sources and destinations) with tabbed view
+- Top talkers table with one row per source → destination flow, showing both per-second rates and cumulative totals
+- Session-wide protocol breakdown (TCP, UDP, ICMP, ICMPv6, GRE, ESP, AH, SCTP, Multicast)
+- CPU usage panel (user / system / total / ipvtop process)
 - Optional reverse-DNS resolution of IPs to hostnames, toggleable at runtime
-- Protocol breakdown (TCP, UDP, ICMP, ICMPv6, GRE, ESP, AH, SCTP)
+- Pick an interface from a menu at startup or switch interfaces at runtime
+- Pause, reset stats, and change the refresh interval without restarting
 - btop-inspired dark theme with rounded borders and color-coded panels
 - Runs on Linux and macOS
 
@@ -44,7 +47,7 @@ sudo ./ipvtop-linux-x86_64 eth0
 ### From source with uv
 
 ```bash
-git clone https://github.com/yourusername/ipvtop.git
+git clone https://github.com/ibehren1/ipvtop.git
 cd ipvtop
 uv sync
 sudo uv run ipvtop eth0
@@ -65,7 +68,8 @@ usage: ipvtop [-h] [-v] [-l] [-n INTERVAL] [-r] [interface]
 Real-time network traffic monitor with IPv4/IPv6 breakdown
 
 positional arguments:
-  interface             Network interface to monitor (e.g., eth0, wlan0, en0)
+  interface             Network interface to monitor (e.g., eth0, wlan0); if
+                        omitted, you'll be prompted to choose one at startup
 
 options:
   -h, --help            show this help message and exit
@@ -87,6 +91,9 @@ ipvtop -l
 sudo ipvtop eth0        # Linux
 sudo ipvtop en0         # macOS
 
+# Launch without an interface to pick one from a menu (requires root)
+sudo ipvtop
+
 # Resolve source/dest IPs to hostnames via reverse DNS
 sudo ipvtop -r eth0
 
@@ -103,8 +110,13 @@ sudo uv run ipvtop eth0
 | `r` | Toggle reverse-DNS resolution of IPs |
 | `R` | Reset all statistics |
 | `n` | Change refresh interval |
+| `i` | Choose / switch the monitored interface |
+
+Pressing `i` opens a menu of available interfaces (the one currently being monitored is marked). Selecting a different interface restarts capture on it and resets statistics. If you launch ipvtop without naming an interface, this menu opens automatically at startup.
 
 ## Dashboard panels
+
+The dashboard is arranged in two columns above a full-width Top Talkers table. The left column (25% width) stacks Summary, CPU, and Protocols; the right column (75% width) stacks Bandwidth, the IPv4 / IPv6 Split bar, and Traffic History.
 
 ### Summary
 
@@ -116,7 +128,7 @@ A 60-second rolling line chart rendered with braille characters showing IPv4 and
 
 ### IPv4 / IPv6 Split
 
-A full-width stacked bar showing the cumulative byte ratio between IPv4 (blue) and IPv6 (green) with embedded percentage labels.
+A stacked bar showing the cumulative byte ratio between IPv4 (blue) and IPv6 (green) with embedded percentage labels.
 
 ### Traffic History
 
@@ -128,11 +140,15 @@ Four sparkline rows showing rolling 60-second history:
 
 ### Top Talkers
 
-A tabbed data table switching between top source and destination IPs. Shows per-second and cumulative packet/byte counts. IPs are color-coded blue (v4) or green (v6). With reverse-DNS resolution enabled (the `-r` flag or the `r` key), entries display their resolved hostname when a PTR record is found, falling back to the raw IP otherwise.
+A single data table showing the top flows — each row is one source → destination conversation with its per-second packet and byte rates plus cumulative packet and byte totals. IPs are color-coded blue (v4) or green (v6). With reverse-DNS resolution enabled (the `-r` flag or the `r` key), endpoints display their resolved hostname when a PTR record is found, falling back to the raw IP otherwise.
+
+### CPU
+
+A compact bar panel showing CPU utilization, refreshed each tick: `User`, `System`, `Total`, and the share consumed by the `ipvtop` process itself (normalized to system-wide percentage). Bars turn orange above 50% and red above 80%.
 
 ### Protocols
 
-Horizontal bar chart showing the distribution of traffic across protocols (TCP, UDP, ICMP, ICMPv6, GRE, ESP, AH, SCTP).
+Horizontal bar chart showing the session-wide distribution of traffic across protocols (TCP, UDP, ICMP, ICMPv6, GRE, ESP, AH, SCTP). Counts accumulate over the whole session (cleared by the `R` key), so the bars reflect the running protocol mix rather than just the latest tick. Packets sent to a multicast destination (IPv4 `224.0.0.0/4` or IPv6 `ff00::/8`) are bucketed as `Multicast` instead of their layer-4 protocol.
 
 ## Color scheme
 
@@ -144,6 +160,9 @@ The interface uses a btop-inspired dark theme:
 | IPv6    | Green (`#50ffa0`) |
 | ICMP    | Orange (`#ffa050`) |
 | ICMPv6  | Pink (`#ff50a0`) |
+| Multicast | Amber (`#ff9020`) |
+| CPU warning (>50%) | Orange (`#ffa050`) |
+| CPU critical (>80%) | Red (`#ff5050`) |
 | Background | Dark blue-black (`#0a0a1a`) |
 | Panel borders | Rounded, muted (`#303050`) |
 
@@ -185,6 +204,7 @@ This triggers a build of all four binaries, generates SHA256 checksums, and crea
 | [textual](https://github.com/Textualize/textual) | TUI framework |
 | [textual-plotext](https://github.com/Textualize/textual-plotext) | Terminal charts |
 | [scapy](https://scapy.net/) | Packet capture and parsing |
+| [psutil](https://github.com/giampaolo/psutil) | CPU usage metrics |
 
 ## Platform notes
 
