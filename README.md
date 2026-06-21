@@ -15,6 +15,7 @@ Built with [Textual](https://github.com/Textualize/textual), [Plotext](https://g
 - Sparkline history for packets/s and Mb/s per protocol version
 - Visual IPv4/IPv6 traffic split bar
 - Top talkers table (sources and destinations) with tabbed view
+- Optional reverse-DNS resolution of IPs to hostnames, toggleable at runtime
 - Protocol breakdown (TCP, UDP, ICMP, ICMPv6, GRE, ESP, AH, SCTP)
 - btop-inspired dark theme with rounded borders and color-coded panels
 - Runs on Linux and macOS
@@ -59,16 +60,21 @@ sudo ipvtop eth0
 ## Usage
 
 ```
-usage: ipvtop [-h] [-l] [interface]
+usage: ipvtop [-h] [-v] [-l] [-n INTERVAL] [-r] [interface]
 
 Real-time network traffic monitor with IPv4/IPv6 breakdown
 
 positional arguments:
-  interface   Network interface to monitor (e.g., eth0, wlan0, en0)
+  interface             Network interface to monitor (e.g., eth0, wlan0, en0)
 
 options:
-  -h, --help  show this help message and exit
-  -l, --list  List available network interfaces and exit
+  -h, --help            show this help message and exit
+  -v, --version         Show the version and exit
+  -l, --list            List available network interfaces and exit
+  -n INTERVAL, --interval INTERVAL
+                        Screen refresh interval in seconds (default: 1.0)
+  -r, --resolve         Reverse-DNS resolve source/dest IPs, showing hostnames
+                        when available
 ```
 
 ### Examples
@@ -81,6 +87,9 @@ ipvtop -l
 sudo ipvtop eth0        # Linux
 sudo ipvtop en0         # macOS
 
+# Resolve source/dest IPs to hostnames via reverse DNS
+sudo ipvtop -r eth0
+
 # Run from source with uv
 sudo uv run ipvtop eth0
 ```
@@ -91,7 +100,9 @@ sudo uv run ipvtop eth0
 |-----|--------|
 | `q` | Quit |
 | `p` | Pause / resume display |
-| `r` | Reset all statistics |
+| `r` | Toggle reverse-DNS resolution of IPs |
+| `R` | Reset all statistics |
+| `n` | Change refresh interval |
 
 ## Dashboard panels
 
@@ -117,7 +128,7 @@ Four sparkline rows showing rolling 60-second history:
 
 ### Top Talkers
 
-A tabbed data table switching between top source and destination IPs. Shows per-second and cumulative packet/byte counts. IPs are color-coded blue (v4) or green (v6).
+A tabbed data table switching between top source and destination IPs. Shows per-second and cumulative packet/byte counts. IPs are color-coded blue (v4) or green (v6). With reverse-DNS resolution enabled (the `-r` flag or the `r` key), entries display their resolved hostname when a PTR record is found, falling back to the raw IP otherwise.
 
 ### Protocols
 

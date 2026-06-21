@@ -10,7 +10,9 @@ from textual.screen import ModalScreen
 from textual.timer import Timer
 from textual.widgets import Footer, Header, Input, Label
 
+from ipvtop import __version__
 from ipvtop.capture import PacketCapture
+from ipvtop.resolve import Resolver
 from ipvtop.stats import TrafficStats
 from ipvtop.widgets import (
     BandwidthChart,
@@ -78,22 +80,25 @@ class IntervalScreen(ModalScreen[float | None]):
 
 class IPvTopApp(App):
     CSS_PATH = "ipvtop.tcss"
-    TITLE = "ipvtop"
+    TITLE = f"ipvtop v{__version__}"
 
     BINDINGS = [
         Binding("q", "quit", "Quit", priority=True),
         Binding("p", "toggle_pause", "Pause"),
-        Binding("r", "reset_stats", "Reset"),
+        Binding("r", "toggle_resolve", "Resolve"),
+        Binding("R", "reset_stats", "Reset"),
         Binding("n", "change_interval", "Interval"),
     ]
 
-    def __init__(self, interface: str, interval: float = 1.0) -> None:
+    def __init__(self, interface: str, interval: float = 1.0, resolve: bool = False) -> None:
         super().__init__()
         self.interface = interface
         self.refresh_interval = interval
         self.packet_queue: deque = deque(maxlen=100_000)
         self.traffic_stats = TrafficStats(packet_queue=self.packet_queue)
         self.capture = PacketCapture(interface=self.interface, packet_queue=self.packet_queue)
+        self.resolver: Resolver | None = None
+        self.resolve_enabled = resolve
         self.paused = False
         self._start_time = 0.0
         self._timer: Timer | None = None
@@ -115,7 +120,9 @@ class IPvTopApp(App):
         yield Footer()
 
     def on_mount(self) -> None:
-        self.sub_title = f"{self.interface} | {self.refresh_interval:.1f}s"
+        if self.resolve_enabled:
+            self.resolver = Resolver()
+        self._update_subtitle()
         self._start_time = monotonic()
 
         self.query_one("#summary").border_title = "Summary"
@@ -173,13 +180,29 @@ class IPvTopApp(App):
             self.traffic_stats._dest_counter,
             self.traffic_stats._source_bytes,
             self.traffic_stats._dest_bytes,
+            self.resolver if self.resolve_enabled else None,
         )
         self.query_one("#cpu-panel", CpuPanel).poll()
         self.query_one("#protocol-breakdown", ProtocolBreakdown).update_stats(interval)
 
+    def _update_subtitle(self) -> None:
+        flags = []
+        if self.resolve_enabled:
+            flags.append("DNS")
+        if self.paused:
+            flags.append("PAUSED")
+        suffix = f" [{' '.join(flags)}]" if flags else ""
+        self.sub_title = f"{self.interface} | {self.refresh_interval:.1f}s{suffix}"
+
     def action_toggle_pause(self) -> None:
         self.paused = not self.paused
-        self.sub_title = f"{self.interface} | {self.refresh_interval:.1f}s {'[PAUSED]' if self.paused else ''}"
+        self._update_subtitle()
+
+    def action_toggle_resolve(self) -> None:
+        self.resolve_enabled = not self.resolve_enabled
+        if self.resolve_enabled and self.resolver is None:
+            self.resolver = Resolver()
+        self._update_subtitle()
 
     def action_reset_stats(self) -> None:
         self.traffic_stats.reset()
@@ -195,7 +218,9 @@ class IPvTopApp(App):
         if self._timer is not None:
             self._timer.stop()
         self._timer = self.set_interval(self.refresh_interval, self._refresh_stats)
-        self.sub_title = f"{self.interface} | {self.refresh_interval:.1f}s"
+        self._update_subtitle()
 
     def on_unmount(self) -> None:
         self.capture.stop()
+        if self.resolver is not None:
+            self.resolver.stop()
