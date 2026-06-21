@@ -23,6 +23,22 @@ class PacketInfo(NamedTuple):
     protocol: int
 
 
+def is_multicast(ip_version: int, dst_ip: str) -> bool:
+    """Return True if the destination address is multicast.
+
+    IPv4 multicast is 224.0.0.0/4 (first octet 224-239); IPv6 multicast is
+    ff00::/8 (address starts with "ff").
+    """
+    if not dst_ip:
+        return False
+    if ip_version == 4:
+        first = dst_ip.split(".", 1)[0]
+        return first.isdigit() and 224 <= int(first) <= 239
+    if ip_version == 6:
+        return dst_ip.lower().startswith("ff")
+    return False
+
+
 class IntervalStats(NamedTuple):
     ipv4_packets: int
     ipv6_packets: int
@@ -32,4 +48,6 @@ class IntervalStats(NamedTuple):
     other_bytes: int
     top_sources: list[tuple[str, int, int]]  # (ip, packets, bytes)
     top_destinations: list[tuple[str, int, int]]
+    # (src_ip, dst_ip, packets, bytes, total_packets, total_bytes)
+    top_flows: list[tuple[str, str, int, int, int, int]]
     protocol_counts: dict[str, int]

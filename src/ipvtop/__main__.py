@@ -15,7 +15,8 @@ def main() -> None:
     parser.add_argument(
         "interface",
         nargs="?",
-        help="Network interface to monitor (e.g., eth0, wlan0)",
+        help="Network interface to monitor (e.g., eth0, wlan0); if omitted, "
+             "you'll be prompted to choose one at startup",
     )
     parser.add_argument(
         "-v", "--version",
@@ -47,9 +48,6 @@ def main() -> None:
         for iface in PacketCapture.list_interfaces():
             print(iface)
         sys.exit(0)
-
-    if not args.interface:
-        parser.error("interface is required (use -l to list available interfaces)")
 
     if os.geteuid() != 0:
         print(

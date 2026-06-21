@@ -16,15 +16,25 @@ Footer {
     color: #606080;
 }
 
-/* ── Top row: summary + bandwidth chart ── */
+/* ── Main row: left column (summary/cpu/protocols) + right column (bandwidth/split/history) ── */
 
-#top-row {
-    height: 14;
+#main-row {
+    height: 32;
     margin: 0 1;
 }
 
+#left-col {
+    width: 25%;
+    layout: vertical;
+}
+
+#right-col {
+    width: 75%;
+    layout: vertical;
+}
+
 #summary {
-    width: 1fr;
+    height: 14;
     border: round #303050;
     border-title-color: #50a0ff;
     border-title-align: left;
@@ -37,7 +47,7 @@ Footer {
 }
 
 #bandwidth-chart {
-    width: 2fr;
+    height: 14;
     border: round #303050;
     border-title-color: #50ffa0;
     border-title-align: left;
@@ -51,23 +61,15 @@ Footer {
 /* ── Traffic split bar ── */
 
 #traffic-split {
-    height: 4;
-    margin: 0 1;
+    height: 6;
     border: round #303050;
     border-title-color: #ffa050;
     border-title-align: left;
     background: #0e0e20;
 }
 
-/* ── Middle row: sparklines ── */
-
-#mid-row {
-    height: 11;
-    margin: 0 1;
-}
-
 #sparklines {
-    width: 1fr;
+    height: 10;
     border: round #303050;
     border-title-color: #ffa050;
     border-title-align: left;
@@ -95,25 +97,16 @@ Sparkline.v6-spark > .sparkline--min-color {
     color: #1a2a1a;
 }
 
-/* ── Bottom row: top talkers + protocol breakdown ── */
+/* ── Bottom: full-width top talkers ── */
 
-#bottom-row {
+#top-talkers {
     height: 1fr;
     min-height: 10;
     margin: 0 1;
-}
-
-#top-talkers {
-    width: 2fr;
     border: round #303050;
     border-title-color: #a050ff;
     border-title-align: left;
     background: #0e0e20;
-}
-
-#right-col {
-    width: 1fr;
-    layout: vertical;
 }
 
 #status-label {
@@ -123,12 +116,12 @@ Sparkline.v6-spark > .sparkline--min-color {
     color: #50a0ff;
     text-style: bold;
     width: 100%;
-    margin: 0;
+    margin: 0 1;
     overflow-y: auto;
 }
 
 #cpu-panel {
-    height: 10;
+    height: 6;
     border: round #303050;
     border-title-color: #ffa050;
     border-title-align: left;
@@ -137,7 +130,7 @@ Sparkline.v6-spark > .sparkline--min-color {
 }
 
 #protocol-breakdown {
-    height: 1fr;
+    height: 10;
     border: round #303050;
     border-title-color: #ff50a0;
     border-title-align: left;

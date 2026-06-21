@@ -15,6 +15,12 @@ PROTO_COLORS: dict[str, str] = {
     "ESP": "#ffff50",
     "AH": "#50ffff",
     "SCTP": "#ff5050",
+    "Multicast": "#ff9020",
+}
+
+# Display labels for protocols whose name is too long for the fixed-width column.
+PROTO_LABELS: dict[str, str] = {
+    "Multicast": "Mcast",
 }
 
 
@@ -43,8 +49,9 @@ class ProtocolBreakdown(Widget):
             pct = count / total
             filled = int(pct * bar_width)
             color = PROTO_COLORS.get(proto, "#808080")
+            label = PROTO_LABELS.get(proto, proto)
 
-            text.append(f"  {proto:<8}", style=f"bold {color}")
+            text.append(f"  {label:<8}", style=f"bold {color}")
             text.append("█" * filled, style=color)
             text.append("░" * (bar_width - filled), style="#303030")
             text.append(f" {pct:>5.1%} ", style="#a0a0a0")

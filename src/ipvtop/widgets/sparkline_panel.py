@@ -22,7 +22,7 @@ class SparklineRow(Widget):
     }
     SparklineRow Label.spark-label {
         width: 16;
-        content-align: right middle;
+        content-align: left middle;
         color: #808080;
     }
     SparklineRow Sparkline {
@@ -47,7 +47,7 @@ class SparklineRow(Widget):
         self._row_id = row_id
 
     def compose(self) -> ComposeResult:
-        yield Label(f" {self._label} ", classes="spark-label")
+        yield Label(self._label, classes="spark-label")
         spark_classes = "v6-spark" if "v6" in self._row_id else "v4-spark"
         yield Sparkline(
             data=[0] * 60,
