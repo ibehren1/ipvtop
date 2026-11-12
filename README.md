@@ -1,3 +1,8 @@
+![GitHub Release](https://img.shields.io/github/v/release/ibehren1/ipvtop)
+[![Build binaries](https://github.com/ibehren1/ipvtop/actions/workflows/build.yml/badge.svg)](https://github.com/ibehren1/ipvtop/actions/workflows/build.yml)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ibehren1/ipvtop/total)
+
+
 # ipvtop
 
 A real-time network traffic monitor for the terminal with IPv4/IPv6 breakdown. Inspired by [btop](https://github.com/aristocratos/btop).
